@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using static System.Console;
 
 namespace SudokuSolver.Services
@@ -13,7 +14,21 @@ namespace SudokuSolver.Services
             try
             {
                 var sudokuFile = File.ReadAllLines(filename);
-                Write(sudokuFile);
+                int row = 0;
+                foreach(var line in sudokuFile)
+                {
+                    // spliting the line to extract the elements in between the || 
+                    string[] splitSudkoLine = line.Split('|').Skip(1).Take(9).ToArray();
+
+                    int col = 0;
+                    foreach(var element in splitSudkoLine)
+                    {
+                        //   populating the board
+                        board[row, col] = element.Equals(" ") ? 0 : Convert.ToInt16(element);
+                        col++;
+                    }
+                    row++;
+                }
 
             }
             catch(Exception ex)
