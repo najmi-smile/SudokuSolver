@@ -35,25 +35,27 @@ namespace SudokuSolver.contracts
             for (int row = 0; row < 9; row++) if (IsValidSingle(sudokuBoard[row, givenCol])) possibilities[sudokuBoard[row, givenCol] - 1] = 0;
             for (int col = 0; col < 9; col++) if (IsValidSingle(sudokuBoard[givenRow, col])) possibilities[sudokuBoard[givenRow, col] - 1] = 0;
             return Convert.ToInt32(String.Join(string.Empty, possibilities.Select(p => p).Where(p => p != 0)));
-        }
-
-        private bool IsValidSingle(int cellDigit)
-        {
-            return cellDigit != 0 && cellDigit.ToString().Length < 2;
-        }
+        }        
 
         private object GetPossibilitiesInBlock(int[,] sudokuBoard, int givenRow, int givenCol)
         {
             int[] possibilities = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            for (int row = 0; row < 9; row++)
+            var sudokuMap = _sudokuMapper.Find(givenRow, givenCol);
+
+            for (int row = sudokuMap.StartRow; row <= sudokuMap.StartRow + 2; row++)
             {
-                for (int col = 0; col < 9; col++)
+                for (int col = sudokuMap.StartCol; col <= sudokuMap.StartCol + 2; col++)
                 {
                     if (IsValidSingle(sudokuBoard[row, givenCol])) possibilities[sudokuBoard[row, givenCol] - 1] = 0;
                 }
             }
             return Convert.ToInt32(String.Join(string.Empty, possibilities.Select(p => p).Where(p => p != 0)));
 
+        }
+
+        private bool IsValidSingle(int cellDigit)
+        {
+            return cellDigit != 0 && cellDigit.ToString().Length < 2;
         }
         private int GetPossibilityIntersection(object possibilitiesInRowAndCol, object possibilitiesInBlock)
         {

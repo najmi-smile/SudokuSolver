@@ -14,7 +14,7 @@ namespace SudokuSolver.Services
                 Write("|");
                 for(int col = 0; col < sudokuBoard.GetLength(1); col++)
                 {
-                    WriteLine($"{sudokuBoard[row, col]}|");
+                    Write($"{sudokuBoard[row, col]}|");
                 }
                 WriteLine();
             }
